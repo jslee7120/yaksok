@@ -44,6 +44,10 @@
         <activity android:name=".customize_actionbar" />
         <activity android:name=".ChattingMenu" />
         <activity android:name=".ChattingRoom" />
+        <activity android:name=".js.InsertPillActivity" />
+        <activity android:name=".js.InsertPillScroll" />
+        <activity android:name=".js.InsertPillScrollQR" />
+        <activity android:name=".js.SearchPill" />
 
         <service
             android:name=".firebaseService.FirebaseMessageService"
@@ -61,6 +65,10 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"></service>
 
 
 

@@ -1,26 +1,60 @@
 package yaksok.dodream.com.yaksok;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import yaksok.dodream.com.yaksok.js.InsertPillActivity;
+import yaksok.dodream.com.yaksok.js.NearTimeMedicineVO;
+import yaksok.dodream.com.yaksok.service.UserService;
 
 public class MainPageActivity extends AppCompatActivity {
     private String img_url;
     Button bt_chat,bt_InsertPill,btn_addFamily;
+
+    Retrofit retrofit;
+    UserService userService;
+
+    TextView tv_main_hour, tv_main_min;
+    Date now;
+    String curTime;
+
+    int times,m,h;
+    int t1,ctime,ptime,pilltime_h,pilltime_m;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
+
+        tv_main_hour = (TextView)findViewById(R.id.tv_main_hour);
+        tv_main_min = (TextView)findViewById(R.id.tv_main_min);
+
+        now = new Date();
+        SimpleDateFormat time = new SimpleDateFormat("HHmm");
+        curTime = time.format(now);
 
         bt_chat = (Button)findViewById(R.id.bt_Chat);
         bt_chat.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +86,18 @@ public class MainPageActivity extends AppCompatActivity {
                overridePendingTransition(R.anim.pull_out_left,R.anim.pull_in_right);
            }
        });
-       }
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(userService.API_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        userService = retrofit.create(UserService.class);
+
+
+        pillTime();
+
+    }
 
 
 
@@ -92,6 +137,133 @@ public class MainPageActivity extends AppCompatActivity {
 //                return  true;
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    class BackThread extends Thread{
+        boolean s=true;
+        int x = ++ctime;
+        @Override
+        public void run() {
+            while(true){
+                // 메인에서 생성된 Handler 객체의 sendEmpryMessage 를 통해 Message 전달
+                Log.d("x= ",String.valueOf(x));
+                try {
+                    Thread.sleep(1000);
+                    Date nowTime = new Date();
+                    Log.d("countDownTimer", "success");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
+                    String countTime = timeFormat.format(nowTime);
+                    int countTime_hour = Integer.parseInt(countTime.substring(0,2));
+                    int countTime_min = Integer.parseInt(countTime.substring(2));
+                    Log.d("countTIme",countTime);
+                    if(Integer.parseInt(countTime) < ptime) {//다음약이 오늘 일 때(초로 계산)
+                        Log.d("지금","성공");
+                        times = ((pilltime_h * 3600) + (pilltime_m * 60)) - ((countTime_hour * 3600) + (countTime_min * 60));
+                        if(times < 3600)
+                            h = 0;
+                        else
+                            h = times / 3600;
+
+                        m = (times % 3600 / 60);
+                    }
+                    else{//다음약이 내일일때(초로 계산)
+                        t1 = (((23*3600)+(59*60)) - ((countTime_hour* 3600) + (countTime_min * 60)));
+                        times = (t1 + ((pilltime_h*3600)+(pilltime_m*60)));
+                        m = (times % 3600/60);
+                        h = times / 3600;
+                    }
+
+                    handler.sendEmptyMessage(0);
+
+                    if(m/10==0)
+                        handler.sendEmptyMessage(1);
+                    else
+                        handler.sendEmptyMessage(2);//시간의 나머지초/60하여 분으로 표시
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } // end while
+        } // end run()
+    } // end class BackThread
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == 0){   // Message id 가 0 이면
+                tv_main_hour.setText(h+"");// 메인스레드의 UI 내용 변경
+            }
+            if(msg.what == 1){
+                tv_main_min.setText("0"+String.valueOf(m).substring(0));
+            }
+            if(msg.what==2){
+                tv_main_min.setText(String.valueOf(m).substring(0,2));
+            }
+        }
+    };
+
+    public void pillTime(){
+        Call<NearTimeMedicineVO> call = userService.getNearTime(LoginActivity.userVO.id);
+        call.enqueue(new Callback<NearTimeMedicineVO>() {
+            @Override
+            public void onResponse(Call<NearTimeMedicineVO> call, Response<NearTimeMedicineVO> response) {
+                NearTimeMedicineVO nearTimeMedicineVO = response.body();
+                System.out.println("############" + nearTimeMedicineVO.getStatus());
+                if (nearTimeMedicineVO.getStatus().equals("200")) {
+                    Toast.makeText(getApplicationContext(), "알림이 있습니다", Toast.LENGTH_LONG).show();
+
+                    //현재 시간, 서버에서 받은시간의 시간과 분 나누는 곳
+                    int nowtime_hour = Integer.parseInt(curTime.substring(0,2));
+                    int nowtime_min = Integer.parseInt(curTime.substring(2));
+                    pilltime_h = Integer.parseInt(nearTimeMedicineVO.getResult().getTime().substring(0,2));
+                    pilltime_m = Integer.parseInt(nearTimeMedicineVO.getResult().getTime().substring(2));
+                    ptime=Integer.parseInt(nearTimeMedicineVO.getResult().getTime().substring(0,4));
+
+                    if(Integer.parseInt(curTime) <= ptime) {//다음약이 오늘 일 때(초로 계산)
+                        Log.d("if1","오늘");
+                        times = ((pilltime_h * 3600) + (pilltime_m * 60)) - ((nowtime_hour * 3600) + (nowtime_min * 60));
+                        if(times < 3600)
+                            h = 0;
+                        else {
+                            h = times / 3600;
+                            m = (times % 3600 / 60) + 1;
+                        }
+                    }
+                    else{//다음약이 내일일(초로 계산)
+                        t1 = (((23*3600)+(59*60)) - ((nowtime_hour * 3600) + (nowtime_min * 60)));
+                        times = (t1 + ((pilltime_h*3600)+(pilltime_m*60)));
+                        h = times / 3600;
+                        m = (times % 3600/60);
+                    }
+
+
+                    tv_main_hour.setText(h+"");
+                    if(m/10==0)
+                        tv_main_min.setText("0"+String.valueOf(m).substring(0));
+                    else
+                        tv_main_min.setText(String.valueOf(m).substring(0,2));//시간의 나머지초/60하여 분으로 표시
+                    ctime = Integer.parseInt(curTime.substring(0,4));
+                    BackThread thread = new BackThread();
+                    thread.setDaemon(true);
+                    thread.start();
+                    Toast.makeText(getApplicationContext(),"Service 시작",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainPageActivity.this,MyService.class);
+                    intent.putExtra("pillTime",String.valueOf(times));
+
+                    Log.d("Test1:",String.valueOf(times));
+                    startService(intent);
+
+                } else if (nearTimeMedicineVO.getStatus().equals("204"))
+                    Toast.makeText(getApplicationContext(), "등록된 약이 없습니다", Toast.LENGTH_LONG).show();
+                else if (nearTimeMedicineVO.getStatus().equals("500"))
+                    Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<NearTimeMedicineVO> call, Throwable t) {
+
+            }
+        });
     }
 
 

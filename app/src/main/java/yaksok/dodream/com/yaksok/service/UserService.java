@@ -7,6 +7,11 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import yaksok.dodream.com.yaksok.js.InsertPillList;
+import yaksok.dodream.com.yaksok.js.MedicineVOList;
+import yaksok.dodream.com.yaksok.js.MyMedicineResponseTypeVO;
+import yaksok.dodream.com.yaksok.js.NearTimeMedicineVO;
+import yaksok.dodream.com.yaksok.js.StatusVO;
 import yaksok.dodream.com.yaksok.vo.ConnectedFamilyVO;
 import yaksok.dodream.com.yaksok.vo.FamilyVO;
 import yaksok.dodream.com.yaksok.vo.BodyVO;
@@ -43,6 +48,19 @@ public interface UserService {
 
     @PUT("/users/fcmtokens")
     Call<BodyVO> putToken(@Body FcmTokenVO fcmTokenVO);
+
+    //js
+    @GET("medicines/{item}")
+    Call<MedicineVOList>getSearchPillList(@Path("item")String item , @Query("itemType") String itemtype);
+
+    @POST("mymedicines/")
+    Call<StatusVO> postMyInserttPill(@Body InsertPillList insertPillList);
+
+    @GET("/mymedicines/{userId}")
+    Call<MyMedicineResponseTypeVO>getMymediciens(@Path("userId")String userId);
+
+    @GET("/mymedicines/{userId}/neartime")
+    Call<NearTimeMedicineVO>getNearTime(@Path("userId") String userId);
 
 
     //=====토큰 업데이트======
