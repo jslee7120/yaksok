@@ -4,9 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.LocaleData;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,8 +45,11 @@ public class MainPageActivity extends AppCompatActivity {
     Date now;
     String curTime;
 
+    AlarmManager am;
+
     int times,m,h;
     int t1,ctime,ptime,pilltime_h,pilltime_m;
+
 
 
     @Override
@@ -54,12 +57,15 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
 
+
         tv_main_hour = (TextView)findViewById(R.id.tv_main_hour);
         tv_main_min = (TextView)findViewById(R.id.tv_main_min);
 
         now = new Date();
         SimpleDateFormat time = new SimpleDateFormat("HHmm");
         curTime = time.format(now);
+
+        am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
         bt_chat = (Button)findViewById(R.id.bt_Chat);
         bt_chat.setOnClickListener(new View.OnClickListener() {
@@ -252,8 +258,8 @@ public class MainPageActivity extends AppCompatActivity {
                     thread.start();
                     Toast.makeText(getApplicationContext(),"Service 시작",Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(MainPageActivity.this,MyService.class);
-                    intent.putExtra("pillTime",String.valueOf(times));
+                    //Intent intent = new Intent(MainPageActivity.this,MyService.class);
+                   // intent.putExtra("pillTime",String.valueOf(times));
 
                     Log.d("Test1:",String.valueOf(times));
                     //startService(intent);
@@ -271,29 +277,28 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
     }
-
     public void alarm_on(){
         // 알람 등록하기
         Log.i("alarm", "setAlarm");
-        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+
         Intent intent = new Intent(this, AlarmReceive.class);   //AlarmReceive.class이클레스는 따로 만들꺼임 알람이 발동될때 동작하는 클레이스임
 
-        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+        PendingIntent pender = PendingIntent.getBroadcast(MainPageActivity.this, 0, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
         //알람시간 calendar에 set해주기
+
+        Log.d("알림 시간",calendar.get(Calendar.YEAR) + "/" +  calendar.get(Calendar.MONTH) +"/" + calendar.get(Calendar.DATE)+"/"+pilltime_h+":"+pilltime_m);
 
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), pilltime_h,pilltime_m);//시간을 10시 01분으로 일단 set했음
         calendar.set(Calendar.SECOND, 0);
 
         //알람 예약
-        am.set(AlarmManager.RTC, calendar.getTimeInMillis(), sender);//이건 한번 알람
-      // am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*60*60*1000, sender);//이건 여러번 알람 24*60*60*1000 이건 하루에한번 계속 알람한다는 뜻.
-        Toast.makeText(this,"시간설정:"+ Integer.toString(calendar.get(calendar.HOUR_OF_DAY))+":"+Integer.toString(calendar.get(calendar.MINUTE)),Toast.LENGTH_LONG).show();
+        am.set(AlarmManager.RTC, calendar.getTimeInMillis(),pender);//이건 한번 알람
+        //am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*60*60*1000, sender);//이건 여러번 알람 24*60*60*1000 이건 하루에한번 계속 알람한다는 뜻.
+        Toast.makeText(MainPageActivity.this,"시간설정:"+ Integer.toString(calendar.get(calendar.HOUR_OF_DAY))+":"+Integer.toString(calendar.get(calendar.MINUTE)),Toast.LENGTH_LONG).show();
     }
-
-
-
 
 
 }

@@ -69,6 +69,15 @@
             android:name=".MyService"
             android:enabled="true"
             android:exported="true"></service>
+        <receiver android:name=".AlarmReceive"
+                  android:enabled="true">
+        </receiver>
+        <activity
+            android:name=".Alarm_On"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
 
 
 
