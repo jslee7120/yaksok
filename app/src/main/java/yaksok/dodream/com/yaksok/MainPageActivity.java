@@ -1,8 +1,12 @@
 package yaksok.dodream.com.yaksok;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -202,7 +207,7 @@ public class MainPageActivity extends AppCompatActivity {
     };
 
     public void pillTime(){
-        Call<NearTimeMedicineVO> call = userService.getNearTime(LoginActivity.userVO.id);
+        Call<NearTimeMedicineVO> call = userService.getNearTime("dldjzhs");
         call.enqueue(new Callback<NearTimeMedicineVO>() {
             @Override
             public void onResponse(Call<NearTimeMedicineVO> call, Response<NearTimeMedicineVO> response) {
@@ -251,7 +256,8 @@ public class MainPageActivity extends AppCompatActivity {
                     intent.putExtra("pillTime",String.valueOf(times));
 
                     Log.d("Test1:",String.valueOf(times));
-                    startService(intent);
+                    //startService(intent);
+                    alarm_on();
 
                 } else if (nearTimeMedicineVO.getStatus().equals("204"))
                     Toast.makeText(getApplicationContext(), "등록된 약이 없습니다", Toast.LENGTH_LONG).show();
@@ -264,6 +270,26 @@ public class MainPageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void alarm_on(){
+        // 알람 등록하기
+        Log.i("alarm", "setAlarm");
+        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceive.class);   //AlarmReceive.class이클레스는 따로 만들꺼임 알람이 발동될때 동작하는 클레이스임
+
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        //알람시간 calendar에 set해주기
+
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), pilltime_h,pilltime_m);//시간을 10시 01분으로 일단 set했음
+        calendar.set(Calendar.SECOND, 0);
+
+        //알람 예약
+        am.set(AlarmManager.RTC, calendar.getTimeInMillis(), sender);//이건 한번 알람
+      // am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*60*60*1000, sender);//이건 여러번 알람 24*60*60*1000 이건 하루에한번 계속 알람한다는 뜻.
+        Toast.makeText(this,"시간설정:"+ Integer.toString(calendar.get(calendar.HOUR_OF_DAY))+":"+Integer.toString(calendar.get(calendar.MINUTE)),Toast.LENGTH_LONG).show();
     }
 
 
