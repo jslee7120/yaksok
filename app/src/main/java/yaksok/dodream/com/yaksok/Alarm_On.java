@@ -40,6 +40,8 @@ public class Alarm_On extends Activity {
         Button bt_Ok = (Button) findViewById(R.id.bt_D_Ok);
         Button bt_Cancle = (Button)findViewById(R.id.bt_D_Cancel);
 
+        Log.d("다이얼로그","약 먹으세요 들어옴");
+
 //        Log.d("제발",intent.getStringExtra("user"));
 
        // userId = intent.getStringExtra("user");

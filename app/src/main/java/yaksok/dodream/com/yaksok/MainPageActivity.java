@@ -51,6 +51,8 @@ public class MainPageActivity extends AppCompatActivity {
     public static int n = 0;
 
     AlarmManager am;
+    int countTime_hour;
+    int countTime_min;
 
     int times,m,h;
     int t1,ctime,ptime,pilltime_h,pilltime_m;
@@ -169,8 +171,8 @@ public class MainPageActivity extends AppCompatActivity {
                     Log.d("countDownTimer", "success");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
                     String countTime = timeFormat.format(nowTime);
-                    int countTime_hour = Integer.parseInt(countTime.substring(0,2));
-                    int countTime_min = Integer.parseInt(countTime.substring(2));
+                    countTime_hour = Integer.parseInt(countTime.substring(0,2));
+                    countTime_min = Integer.parseInt(countTime.substring(2));
                     Log.d("countTIme",countTime);
                     if(Integer.parseInt(countTime) < ptime) {//다음약이 오늘 일 때(초로 계산)
                         Log.d("지금","성공");
@@ -301,8 +303,10 @@ public class MainPageActivity extends AppCompatActivity {
         //알람시간 calendar에 set해주기
 
         Log.d("알림 시간",calendar.get(Calendar.YEAR) + "/" +  calendar.get(Calendar.MONTH) +"/" + calendar.get(Calendar.DATE)+"/"+pilltime_h+":"+pilltime_m);
-
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), pilltime_h,pilltime_m);//시간을 10시 01분으로 일단 set했음
+        if(countTime_hour < pilltime_m)
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), pilltime_h+24,pilltime_m);
+        else
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), pilltime_h,pilltime_m);//시간을 10시 01분으로 일단 set했음
         calendar.set(Calendar.SECOND, 0);
 
         //알람 예약
