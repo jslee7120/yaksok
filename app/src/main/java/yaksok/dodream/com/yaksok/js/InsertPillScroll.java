@@ -172,6 +172,9 @@ public class InsertPillScroll  extends AppCompatActivity {
             m = String.valueOf(minute);
             tv_1h.setText(h + "시 ");
             tv_1m.setText(m + "분");
+            if(m.length() == 0){
+                m = 0 + m;
+            }
             time.add(h+m);
         }
     };
@@ -181,6 +184,9 @@ public class InsertPillScroll  extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), hourOfDay + "시 " + minute + "분", Toast.LENGTH_SHORT).show();
             h = String.valueOf(hourOfDay);
             m = String.valueOf(minute);
+            if(m.length() == 0){
+                m = 0 + m;
+            }
             tv_2h.setText(h + "시 ");
             tv_2m.setText(m + "분");
             time.add(h+m);
@@ -194,6 +200,9 @@ public class InsertPillScroll  extends AppCompatActivity {
             m = String.valueOf(minute);
             tv_3h.setText(h + "시 ");
             tv_3m.setText(m + "분");
+            if(m.length() == 0){
+                m = 0 + m;
+            }
             time.add(h+m);
         }
     };

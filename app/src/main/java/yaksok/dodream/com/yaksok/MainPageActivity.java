@@ -31,7 +31,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import yaksok.dodream.com.yaksok.js.InsertPillActivity;
+import yaksok.dodream.com.yaksok.js.MedicineVOList;
 import yaksok.dodream.com.yaksok.js.NearTimeMedicineVO;
+import yaksok.dodream.com.yaksok.js.StatusVO;
+import yaksok.dodream.com.yaksok.js.TakeMedicineVO;
+import yaksok.dodream.com.yaksok.js.TakeOk;
 import yaksok.dodream.com.yaksok.service.UserService;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -44,13 +48,12 @@ public class MainPageActivity extends AppCompatActivity {
     TextView tv_main_hour, tv_main_min;
     Date now;
     String curTime;
+    public static int n = 0;
 
     AlarmManager am;
 
     int times,m,h;
     int t1,ctime,ptime,pilltime_h,pilltime_m;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +107,10 @@ public class MainPageActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         userService = retrofit.create(UserService.class);
-
-
+        if(n==1) {
+            takeMedicine();
+            n=0;
+        }
         pillTime();
 
     }
@@ -221,6 +226,8 @@ public class MainPageActivity extends AppCompatActivity {
                 System.out.println("############" + nearTimeMedicineVO.getStatus());
                 if (nearTimeMedicineVO.getStatus().equals("200")) {
                     Toast.makeText(getApplicationContext(), "알림이 있습니다", Toast.LENGTH_LONG).show();
+                    TakeMedicineVO.setGivingUser("dldjzhs");
+                    TakeMedicineVO.setMedicineNO(String.valueOf(nearTimeMedicineVO.getResult().getMyMedicineNo()));
 
                     //현재 시간, 서버에서 받은시간의 시간과 분 나누는 곳
                     int nowtime_hour = Integer.parseInt(curTime.substring(0,2));
@@ -282,7 +289,11 @@ public class MainPageActivity extends AppCompatActivity {
         Log.i("alarm", "setAlarm");
 
 
-        Intent intent = new Intent(this, AlarmReceive.class);   //AlarmReceive.class이클레스는 따로 만들꺼임 알람이 발동될때 동작하는 클레이스임
+        Intent intent = new Intent(this, AlarmReceive.class);//AlarmReceive.class이클레스는 따로 만들꺼임 알람이 발동될때 동작하는 클레이스임
+
+        Log.d("TakeMe",TakeMedicineVO.getGivingUser());
+        intent.putExtra("userId",TakeMedicineVO.getGivingUser());
+        intent.putExtra("pillNo",TakeMedicineVO.getMedicineNO());
 
         PendingIntent pender = PendingIntent.getBroadcast(MainPageActivity.this, 0, intent, 0);
 
@@ -298,6 +309,40 @@ public class MainPageActivity extends AppCompatActivity {
         am.set(AlarmManager.RTC, calendar.getTimeInMillis(),pender);//이건 한번 알람
         //am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*60*60*1000, sender);//이건 여러번 알람 24*60*60*1000 이건 하루에한번 계속 알람한다는 뜻.
         Toast.makeText(MainPageActivity.this,"시간설정:"+ Integer.toString(calendar.get(calendar.HOUR_OF_DAY))+":"+Integer.toString(calendar.get(calendar.MINUTE)),Toast.LENGTH_LONG).show();
+    }
+
+    public void takeMedicine(){
+
+            TakeOk takeOk = new TakeOk();
+            takeOk.setGivingUser(AlarmReceive.userId);
+            takeOk.setMyMedicineNo(AlarmReceive.pillNo);
+            // Log.d("Check",intent.getStringExtra("uId") + takeOk.getGivingUser());
+
+            Log.d("스태틱 값", AlarmReceive.pillNo + AlarmReceive.userId);
+            Log.d("takeOk값", takeOk.getGivingUser() + takeOk.getMyMedicineNo());
+
+            Call<StatusVO> call = userService.putTakeMedicine(takeOk);
+            System.out.println("@@@@@@@@@@@@@@@@@@@");
+            call.enqueue(new Callback<StatusVO>() {
+                @Override
+                public void onResponse(Call<StatusVO> call, Response<StatusVO> response) {
+                    StatusVO mVO = response.body();
+//                    System.out.println("@@@@@@@@@@@@@@@@@@@" + mVO.getStatus());
+                    if (mVO.getStatus().equals("200")) {
+                        Log.d("약복용 서비스 ", "복용 완료");
+                    } else if (mVO.getStatus().equals("202")) {
+                        Log.d("약복용 서비스 ", "복용 완료 후 약 삭제");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StatusVO> call, Throwable t) {
+                    System.out.println(t.fillInStackTrace().getMessage());
+                }
+
+            });
+
+
     }
 
 

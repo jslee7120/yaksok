@@ -11,9 +11,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import yaksok.dodream.com.yaksok.js.InsertPillActivity;
+import yaksok.dodream.com.yaksok.js.MedicineVOList;
+import yaksok.dodream.com.yaksok.js.SearchPill;
+import yaksok.dodream.com.yaksok.js.StatusVO;
+import yaksok.dodream.com.yaksok.js.TakeMedicineVO;
+import yaksok.dodream.com.yaksok.service.UserService;
 
 public class Alarm_On extends Activity {
+    Intent intent = getIntent();
+    String userId,pillNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +40,19 @@ public class Alarm_On extends Activity {
         Button bt_Ok = (Button) findViewById(R.id.bt_D_Ok);
         Button bt_Cancle = (Button)findViewById(R.id.bt_D_Cancel);
 
+//        Log.d("제발",intent.getStringExtra("user"));
+
+       // userId = intent.getStringExtra("user");
+       // pillNo = intent.getStringExtra("pill");
+
         bt_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),MainPageActivity.class));
+                MainPageActivity.n = 1;
+                Intent intent1 = new Intent(getApplicationContext(), MainPageActivity.class);
+              //  intent1.putExtra("uId",userId);
+              //  intent1.putExtra("pNo",pillNo);
+                startActivity(intent1);
             }
         });
 
@@ -40,6 +62,8 @@ public class Alarm_On extends Activity {
                 finish();
             }
         });
+
+
 
     }
 }

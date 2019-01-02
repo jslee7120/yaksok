@@ -12,6 +12,8 @@ import yaksok.dodream.com.yaksok.js.MedicineVOList;
 import yaksok.dodream.com.yaksok.js.MyMedicineResponseTypeVO;
 import yaksok.dodream.com.yaksok.js.NearTimeMedicineVO;
 import yaksok.dodream.com.yaksok.js.StatusVO;
+import yaksok.dodream.com.yaksok.js.TakeMedicineVO;
+import yaksok.dodream.com.yaksok.js.TakeOk;
 import yaksok.dodream.com.yaksok.vo.ConnectedFamilyVO;
 import yaksok.dodream.com.yaksok.vo.FamilyVO;
 import yaksok.dodream.com.yaksok.vo.BodyVO;
@@ -48,6 +50,9 @@ public interface UserService {
 
     @PUT("/users/fcmtokens")
     Call<BodyVO> putToken(@Body FcmTokenVO fcmTokenVO);
+
+    @PUT("/mymedicines/takingmedicine")
+    Call<StatusVO>putTakeMedicine(@Body TakeOk takeOk);
 
     //js
     @GET("medicines/{item}")

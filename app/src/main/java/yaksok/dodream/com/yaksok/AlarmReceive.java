@@ -12,6 +12,7 @@ public class AlarmReceive extends BroadcastReceiver {   //BroadcastReceiver 가�
 
     String INTENT_ACTION = Intent.ACTION_BOOT_COMPLETED;
     final String TAG = "BOOT_START_SERVICE";
+    public static String userId, pillNo;
 
 
     @Override
@@ -47,6 +48,10 @@ public class AlarmReceive extends BroadcastReceiver {   //BroadcastReceiver 가�
         Notification notification = builder.build();
         nm.notify(1, notification);
 
+        userId = intent.getStringExtra("userId");
+        pillNo = intent.getStringExtra("pillNo");
+
+        Log.d("제발",intent.getStringExtra("userId"));
         Intent intent_ = new Intent(context, Alarm_On.class);
         intent_.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);   // 이거 안해주면 안됨
         context.startActivity(intent_);
