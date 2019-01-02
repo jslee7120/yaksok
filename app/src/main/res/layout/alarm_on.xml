@@ -32,6 +32,7 @@
                 android:textSize="20dp" />
 
 
+
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="234dp"
@@ -39,7 +40,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:gravity="center"
-                android:text="두드림님, 약 복용 시간입니다." />
+                android:text="약 복용 시간입니다." />
+
         </RelativeLayout>
 
         <LinearLayout

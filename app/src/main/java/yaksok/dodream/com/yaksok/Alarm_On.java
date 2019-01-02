@@ -40,5 +40,6 @@ public class Alarm_On extends Activity {
                 finish();
             }
         });
+
     }
 }
