@@ -38,7 +38,7 @@ public class AddYourFmaily extends AppCompatActivity {
     public  AlertDialog.Builder dialog;
     public static FamilyVO familyVO;
     public String family_user_id = "";
-    public boolean isAddedFamily = false;//김대표
+    public boolean isAddedFamily = false;
 
     
     @Override

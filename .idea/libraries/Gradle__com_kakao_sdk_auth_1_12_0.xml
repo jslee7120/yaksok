@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.kakao.sdk:auth-1.12.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/auth-1.12.0.aar/3470f8be37a384f39cbdd8b92e1c9a07/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/auth-1.12.0.aar/3470f8be37a384f39cbdd8b92e1c9a07/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/auth-1.12.0.aar/477bf8008b7c3e87534da7485673a4f4/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/auth-1.12.0.aar/477bf8008b7c3e87534da7485673a4f4/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

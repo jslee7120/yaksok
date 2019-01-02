@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.kakao.sdk:network-1.12.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/network-1.12.0.aar/41fd8af80c1b9cfc04596f075d315a41/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/network-1.12.0.aar/41fd8af80c1b9cfc04596f075d315a41/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/network-1.12.0.aar/8225ff4c22adbc89c1e55db2a779086f/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/network-1.12.0.aar/8225ff4c22adbc89c1e55db2a779086f/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
