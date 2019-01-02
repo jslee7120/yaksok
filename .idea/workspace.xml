@@ -11,16 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="46542cee-e6ef-4cd1-823a-a2e7b6fbea90" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/Alarm_On.java" afterPath="$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/Alarm_On.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/MainPageActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/MainPageActivity.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,8 +38,8 @@
       <file leaf-file-name="MainPageActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/MainPageActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="317" column="31" lean-forward="true" selection-start-line="317" selection-start-column="31" selection-end-line="317" selection-end-column="31" />
+            <state relative-caret-position="257">
+              <caret line="318" column="14" lean-forward="false" selection-start-line="318" selection-start-column="14" selection-end-line="318" selection-end-column="14" />
               <folding>
                 <element signature="e#2324#2614#0" expanded="true" />
                 <element signature="e#2613#2614#0" expanded="true" />
@@ -56,6 +47,8 @@
                 <element signature="e#3012#3013#0" expanded="true" />
                 <element signature="e#3126#3410#0" expanded="true" />
                 <element signature="e#3409#3410#0" expanded="true" />
+                <element signature="e#7465#7924#0" expanded="true" />
+                <element signature="e#7923#7924#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -3025,8 +3018,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/yaksok/dodream/com/yaksok/MainPageActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="317" column="31" lean-forward="true" selection-start-line="317" selection-start-column="31" selection-end-line="317" selection-end-column="31" />
+        <state relative-caret-position="257">
+          <caret line="318" column="14" lean-forward="false" selection-start-line="318" selection-start-column="14" selection-end-line="318" selection-end-column="14" />
           <folding>
             <element signature="e#2324#2614#0" expanded="true" />
             <element signature="e#2613#2614#0" expanded="true" />
@@ -3034,6 +3027,8 @@
             <element signature="e#3012#3013#0" expanded="true" />
             <element signature="e#3126#3410#0" expanded="true" />
             <element signature="e#3409#3410#0" expanded="true" />
+            <element signature="e#7465#7924#0" expanded="true" />
+            <element signature="e#7923#7924#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -316,7 +316,7 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     public void takeMedicine(){
-
+        //커밋??
             TakeOk takeOk = new TakeOk();
             takeOk.setGivingUser(AlarmReceive.userId);
             takeOk.setMyMedicineNo(AlarmReceive.pillNo);
